@@ -1,6 +1,24 @@
 import numpy as np
+from WindFarm import *
+from grid import *
 
-def crossover(parent1, parent2, grid):
+MUTATION_RATE = 0.05
+
+def mutate(child):
+    """
+    Mutates a child generated from crossover.
+    We select a random turbine location
+    and change it to some other random location from the grid
+    """
+    g = grid()
+    m_index = np.random.choice(len(child), 1)
+    rand_pt = g[np.random.choice(len(g), 1)]
+    while rand_pt in child:
+        rand_pt = g[np.random.choice(len(g), 1)]
+    child[m_index] = rand_pt
+    return child
+
+def crossover(parent1, parent2):
     """
     Generates a child given two parents.
     This is the crossover step of genetic algorithm.
@@ -16,18 +34,25 @@ def crossover(parent1, parent2, grid):
                 then it is added to the child
             after that if the number of turbines is more in child
                 then we randomly select the required number
+            We randomly mutate a child according to some mutation rate
     """
-    assert len(parent1) == len(parent2)
+    assert len(parent1.locs) == len(parent2.lcos)
+    g = grid()
     numTurbines = len(parent1)
     child = []
-    for loc in grid:
-        if loc in parent1:
+    for loc in g:
+        if loc in parent1.locs:
             child.append(loc)
-        elif loc in parent2:
+        elif loc in parent2.locs:
             child.append(loc)
 
     assert len(child) >= numTurbines
     if len(child) > numTurbines:
         child = list(np.random.choice(child, numTurbines, replace=False))
-    return child
+
+    r = np.random.random()
+    if r <= MUTATION_RATE:
+        child = mutate(child)
+
+    return WindFarm(numTurbines, child)
 
