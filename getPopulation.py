@@ -1,4 +1,11 @@
 import numpy as np
+from aep_calculation import *
+
+class WindFarm:
+    def __init__(self, numTurbines, locs):
+        assert len(locs) == numTurbines
+        self.locs = locs
+        self.aep = aep_calculation(self.locs)
 
 def getRandInd(grid, numTurbines=50):
     """
@@ -9,8 +16,13 @@ def getRandInd(grid, numTurbines=50):
     Output :
             A list of coordinates of the turbines
     """
-    locs = np.random.choice(grid, numTurbines, replace=False)
-    return list(locs)
+    locs = []
+    loc_ind = np.random.choice(len(grid), numTurbines, replace=False)
+    for i in range(len(grid)):
+        if i in loc_ind:
+            locs.append(grid[i])
+    
+    return WindFarm(numTurbines, list(locs))
 
 def getPopulation(grid, popSize=100):
     """
