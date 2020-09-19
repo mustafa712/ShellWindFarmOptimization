@@ -1,18 +1,23 @@
-# funciton to get grid of the file
-def grid():
+# funciton to get grid of the fi
+import matplotlib.pyplot as plt
+
+def grid(n):  # n is the number of divisions you are making. 
     x=[]
     y=[]
-    for i in range(0,10):
-        if i%2 ==0:
-            for j in range(10):
-                if i ==0:
-                    x.append(i*400+50)
-                else:
-                    x.append(i*400)
-                y.append(50+400*j)
+    div_len = 4000/n
+    for i in range(0,n):
+        if (i*div_len) >3950 or (i*div_len) <50:
+            continue
         else:
-            for j in range(10):
-                x.append(i*400)
-                y.append(250+400*j)
+            for j in range(0,n):
+                if (j*div_len) >3950 or (j*div_len) <50:
+                    continue
+                else:
+                    x.append(i*div_len)
+                    y.append(j*div_len)
+    
     return tuple(zip(x,y))
 
+grid_points = grid(50)
+plt.scatter(*zip(*grid_points))
+plt.show()
