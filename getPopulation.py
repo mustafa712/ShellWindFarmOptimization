@@ -1,6 +1,24 @@
 import numpy as np
 from WindFarm import *
 
+def getPopFromFile(filename, numTurbines=50):
+    population = []
+    locs = []
+    with open(filename, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if "Wind Farm" in line:
+                if len(locs) > 0:
+                    population.append(WindFarm(numTurbines, locs))
+                locs = []
+            elif "END" in line:
+                population.append(WindFarm(numTurbines, locs))
+            else:
+                line = line[:-1].split(",")
+                x, y = float(line[0]), float(line[1])
+                locs.append((x,y))
+    return population
+
 def getRandInd(grid, numTurbines=50):
     """
     A function to randomly genrate an individual
@@ -18,7 +36,7 @@ def getRandInd(grid, numTurbines=50):
     
     return WindFarm(numTurbines, list(locs))
 
-def getPopulation(grid, popSize=100):
+def getPopulation(grid, popSize=100, filename=None):
     """
     A function to get the population of given size
     Input :
@@ -27,6 +45,8 @@ def getPopulation(grid, popSize=100):
     Output :
             Population as a list
     """
+    if filename is not None:
+        return getPopFromFile(filename)
     population = []
     for i in range(popSize):
         population.append(getRandInd(grid))

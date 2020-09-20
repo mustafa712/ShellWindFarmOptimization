@@ -1,10 +1,14 @@
+import sys
 from getPopulation import *
 from grid_old import *
 from selection import *
 from crossover import *
 
 g = grid_old()
-pop = getPopulation(g)
+if len(sys.argv) == 2:
+    pop = getPopulation(g, filename=sys.argv[1])
+else:
+    pop = getPopulation(g)
 numGen = 100
 totalPopSize = 100
 
@@ -23,3 +27,4 @@ with open("population.txt", "w") as f:
         for point in ind.locs:
             f.write(str(point[0]) + "," + str(point[1]) + "\n")
         i += 1
+    f.write("END")
