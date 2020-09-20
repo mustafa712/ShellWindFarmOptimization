@@ -1,6 +1,7 @@
 import numpy as np
 from WindFarm import *
 from grid import *
+from itertools import combinations
 
 MUTATION_RATE = 0.05
 
@@ -56,3 +57,16 @@ def crossover(parent1, parent2):
 
     return WindFarm(numTurbines, child)
 
+
+def breed(selected, numChildren=100):
+    all_pair = list(combinations(selected, 2))
+    if len(all_pair) > numChildren:
+        ind = list(np.random.choice(len(all_pair), numChildren, replace=False))
+        for i in range(len(all_pair)):
+            if i in ind:
+                p1 = all_pair[0]
+                p2 = all_pair[1]
+                crossover(p1, p2)
+    else:
+        for parents in all_pair:
+            crossover(parents[0], parents[1])
