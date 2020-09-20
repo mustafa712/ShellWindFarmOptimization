@@ -18,8 +18,8 @@ def aep_calculation(locs):
     turb_rad       =  turb_diam/2 
     df = pd.DataFrame(locs, columns =['x','y'])
     turb_coords = df.to_numpy(dtype = np.float32)
-    power_curve   =  loadPowerCurve('../Shell_Hackathon Dataset/power_curve.csv')
-    wind_inst_freq =  binWindResourceData(r'../Shell_Hackathon Dataset/Wind Data/wind_data_2007.csv')   
+    power_curve   =  loadPowerCurve('../../Shell_Hackathon Dataset/power_curve.csv')
+    wind_inst_freq =  binWindResourceData(r'../../Shell_Hackathon Dataset/Wind Data/wind_data_2007.csv')   
     n_wind_instances, cos_dir, sin_dir, wind_sped_stacked, C_t = preProcessing(power_curve)
     checkConstraints(turb_coords, turb_diam)
     AEP = getAEP(turb_rad, turb_coords, power_curve, wind_inst_freq, 

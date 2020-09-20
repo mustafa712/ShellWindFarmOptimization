@@ -448,7 +448,7 @@ def checkConstraints(turb_coords, turb_diam):
           print('Somewhere perimeter constraint is violated\n')
     elif peri_constr_viol == False and prox_constr_viol == True:
           print('Somewhere proximity constraint is violated\n')
-    else: print('Both perimeter and proximity constraints are satisfied !!\n')
+    #else: print('Both perimeter and proximity constraints are satisfied !!\n')
         
     return()
 

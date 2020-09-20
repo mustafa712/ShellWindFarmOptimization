@@ -1,6 +1,6 @@
 import numpy as np
 from WindFarm import *
-from grid import *
+from grid_old import *
 from itertools import combinations
 
 MUTATION_RATE = 0.05
@@ -11,11 +11,11 @@ def mutate(child):
     We select a random turbine location
     and change it to some other random location from the grid
     """
-    g = grid()
-    m_index = np.random.choice(len(child), 1)
-    rand_pt = g[np.random.choice(len(g), 1)]
+    g = grid_old()
+    m_index = np.random.choice(len(child), 1)[0]
+    rand_pt = g[np.random.choice(len(g), 1)[0]]
     while rand_pt in child:
-        rand_pt = g[np.random.choice(len(g), 1)]
+        rand_pt = g[np.random.choice(len(g), 1)[0]]
     child[m_index] = rand_pt
     return child
 
@@ -37,9 +37,9 @@ def crossover(parent1, parent2):
                 then we randomly select the required number
             We randomly mutate a child according to some mutation rate
     """
-    assert len(parent1.locs) == len(parent2.lcos)
-    g = grid()
-    numTurbines = len(parent1)
+    assert len(parent1.locs) == len(parent2.locs)
+    g = grid_old()
+    numTurbines = len(parent1.locs)
     child = []
     for loc in g:
         if loc in parent1.locs:
@@ -49,7 +49,8 @@ def crossover(parent1, parent2):
 
     assert len(child) >= numTurbines
     if len(child) > numTurbines:
-        child = list(np.random.choice(child, numTurbines, replace=False))
+        inds = list(np.random.choice(len(child), numTurbines, replace=False))
+        child = [child[i] for i in range(len(child)) if i in inds]
 
     r = np.random.random()
     if r <= MUTATION_RATE:
@@ -59,14 +60,16 @@ def crossover(parent1, parent2):
 
 
 def breed(selected, numChildren=100):
+    children = []
     all_pair = list(combinations(selected, 2))
     if len(all_pair) > numChildren:
         ind = list(np.random.choice(len(all_pair), numChildren, replace=False))
         for i in range(len(all_pair)):
             if i in ind:
-                p1 = all_pair[0]
-                p2 = all_pair[1]
-                crossover(p1, p2)
+                p1 = all_pair[i][0]
+                p2 = all_pair[i][1]
+                children.append(crossover(p1, p2))
     else:
         for parents in all_pair:
-            crossover(parents[0], parents[1])
+            children.append(crossover(parents[0], parents[1]))
+    return children

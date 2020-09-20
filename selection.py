@@ -1,13 +1,13 @@
 # Select 5% of individuals hest AEP
 # For rest, sample from exponential distribution
 
-from getPopulation import *
+#from getPopulation import *
 import numpy as np
-from grid_old import *
+#from grid_old import *
 
-grid_points = grid_old()
-pop = getPopulation(grid_points)
-np.random.seed(1)
+#grid_points = grid_old()
+#pop = getPopulation(grid_points)
+#np.random.seed(1)
 
 def distribution(followers,n):
     """
@@ -22,9 +22,11 @@ def distribution(followers,n):
     a = followers[-1].aep
     
     rest_list = []
-    while(len(rest_list)<n):
-        x_index = np.random.choice(len(followers))
+    inds = list(range(len(followers)))
+    for i in range(n):
+        x_index = np.random.choice(inds)
         x = followers[x_index-1].aep
+        inds.remove(x_index)
 
         prob = (np.exp((x-b)/(2*(b-a))))/2       
         if prob > np.random.rand():
@@ -49,5 +51,3 @@ def selection(population, non_elite,elite_percent = 5):
 
     followers = distribution(rest,non_elite)
     return followers+elite
-
-print(len(selection(pop,80)))
