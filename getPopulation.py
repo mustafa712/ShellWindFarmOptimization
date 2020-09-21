@@ -1,5 +1,6 @@
 import numpy as np
 from WindFarm import *
+from grid import *
 
 def getPopFromFile(filename, numTurbines=50):
     population = []
@@ -16,7 +17,7 @@ def getPopFromFile(filename, numTurbines=50):
             else:
                 line = line[:-1].split(",")
                 x, y = float(line[0]), float(line[1])
-                locs.append((x,y))
+                locs.append(Point(x,y))
     return population
 
 def getRandInd(grid, numTurbines=50):

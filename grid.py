@@ -1,5 +1,5 @@
 # funciton to get grid of the fi
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 class Point:
     def __init__(self, x, y):
@@ -11,14 +11,16 @@ class Point:
         return self.x == other.x and self.y == other.y
 
     def check_constraints(self, pool):
-       for i in self.inRange:
-           coord = (i.x , i.y)
-           #print(coord)
-           for j in pool:
-               if (j.x == i.x) and (j.y == i.y):
-                   return False#, pool
-       else:
-           return True #, (pool+self.point)
+        if self in pool:
+            return False
+        for i in self.inRange:
+            coord = (i.x , i.y)
+            #print(coord)
+            for j in pool:
+                if (j.x == i.x) and (j.y == i.y):
+                    return False#, pool
+        else:
+            return True #, (pool+self.point)
            
 def checkCircle(centre, point, radius=400):
     return (point.x - centre.x)**2 + (point.y - centre.y)**2 < radius**2

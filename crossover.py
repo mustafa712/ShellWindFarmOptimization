@@ -13,11 +13,23 @@ def mutate(child,grid):
     and change it to some other random location from the grid
     """
 
-    m_index = np.random.choice(len(child), 1)[0]
-    rand_pt = grid[np.random.choice(len(grid), 1)[0]]
-    while rand_pt in child:
-        rand_pt = grid[np.random.choice(len(grid), 1)[0]]
-    child[m_index] = rand_pt
+    m_pt = np.random.choice(child, 1)[0]
+    child.remove(m_pt)
+    shuff_neigh = list(m_pt.inRange)
+    random.shuffle(shuff_neigh)
+    for pt in shuff_neigh:
+        if pt.check_constraints(child):
+            child.append(pt)
+            break
+    if len(child) < 50:
+        child.append(m_pt)
+    assert len(child) == 50
+
+    #m_index = np.random.choice(len(child), 1)[0]
+    #rand_pt = grid[np.random.choice(len(grid), 1)[0]]
+    #while rand_pt in child:
+    #    rand_pt = grid[np.random.choice(len(grid), 1)[0]]
+    #child[m_index] = rand_pt
     return child
 
 def crossover(parent1, parent2,grid):
@@ -40,24 +52,50 @@ def crossover(parent1, parent2,grid):
     """
     assert len(parent1.locs) == len(parent2.locs)
     numTurbines = len(parent1.locs)
-    child = []
-    for loc in grid:
-        if loc in parent1.locs:
-            child.append(loc)
-        elif loc in parent2.locs:
-            child.append(loc)
-
-    assert len(child) >= numTurbines
-    
-    random.shuffle(child)
-    child_50 = []
-
-    for i in child:
-        if len(child_50) == 50:
+    child = list(np.random.choice(parent1.locs, int(numTurbines/2), replace=False))
+    for loc in parent2.locs:
+        if len(child) == numTurbines:
             break
-        else:
-            if(i.check_constraints(child_50)):
-                child_50.append(i)
+        if loc.check_constraints(child):
+            child.append(loc)
+
+    if len(child) < numTurbines:
+        for loc in parent2.locs:
+            if len(child) == numTurbines:
+                break
+            for neigh in loc.inRange:
+                if neigh.check_constraints(child):
+                    child.append(neigh)
+                    break
+
+    if len(child) < numTurbines:
+        g = grid()
+        random.shuffle(g)
+        for loc in g:
+            if len(child) == numTurbines:
+                break
+            if loc.check_constraints(child):
+                child.append(loc)
+    assert len(child) == numTurbines
+
+    ##child = []
+    ##for loc in grid:
+    ##    if loc in parent1.locs:
+    ##        child.append(loc)
+    ##    elif loc in parent2.locs:
+    ##        child.append(loc)
+
+    ##assert len(child) >= numTurbines
+    ##
+    ##random.shuffle(child)
+    ##child_50 = []
+
+    ##for i in child:
+    ##    if len(child_50) == 50:
+    ##        break
+    ##    else:
+    ##        if(i.check_constraints(child_50)):
+    ##            child_50.append(i)
 
 
 #    if len(child) > numTurbines:
@@ -66,9 +104,9 @@ def crossover(parent1, parent2,grid):
 
     r = np.random.random()
     if r <= MUTATION_RATE:
-        child_50 = mutate(child_50, grid)
+        child = mutate(child, grid)
 
-    return WindFarm(numTurbines, child_50)
+    return WindFarm(numTurbines, child)
 
 
 def breed(selected, grid,numChildren=100):
