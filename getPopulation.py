@@ -49,6 +49,6 @@ def getPopulation(grid, popSize=100, filename=None):
         return getPopFromFile(filename)
     population = []
     for i in range(popSize):
-        population.append(getRandInd(grid))
+        population.append(getRandInd(grid,50))
 
     return population

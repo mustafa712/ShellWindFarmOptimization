@@ -16,7 +16,11 @@ def aep_calculation(locs):
                      }
     turb_diam      =  turb_specs['Dia (m)']
     turb_rad       =  turb_diam/2 
-    df = pd.DataFrame(locs, columns =['x','y'])
+    loc = []
+    for i in locs:
+        loc.append((i.x,i.y))
+
+    df = pd.DataFrame(loc, columns =['x','y'])
     turb_coords = df.to_numpy(dtype = np.float32)
     power_curve   =  loadPowerCurve('../../Shell_Hackathon Dataset/power_curve.csv')
     wind_inst_freq =  binWindResourceData(r'../../Shell_Hackathon Dataset/Wind Data/wind_data_2007.csv')   

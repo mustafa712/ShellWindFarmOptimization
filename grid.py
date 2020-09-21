@@ -11,11 +11,14 @@ class Point:
         return self.x == other.x and self.y == other.y
 
     def check_constraints(self, pool):
-       for x in self.inRange:
-           if x in pool:
-               return False, pool
+       for i in self.inRange:
+           coord = (i.x , i.y)
+           #print(coord)
+           for j in pool:
+               if (j.x == i.x) and (j.y == i.y):
+                   return False#, pool
        else:
-           return True, (pool+self.point)
+           return True #, (pool+self.point)
            
 def checkCircle(centre, point, radius=400):
     return (point.x - centre.x)**2 + (point.y - centre.y)**2 < radius**2
@@ -44,3 +47,12 @@ def grid(n):  # n is the number of divisions you are making.
     fillNeighbours(points)
     
     return points
+#poi = grid(10)
+#point_list_x = []
+#point_list_y = []
+#for i in poi:
+#    point_list_x.append((i.x))
+#    point_list_y.append((i.y))
+#
+#plt.scatter((point_list_x),point_list_y)
+#plt.show()
