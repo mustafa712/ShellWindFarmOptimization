@@ -4,7 +4,7 @@ from grid import *
 from itertools import combinations
 import random
 
-MUTATION_RATE = 0.05
+MUTATION_RATE = 0.75
 
 def mutate(child,grid):
     """

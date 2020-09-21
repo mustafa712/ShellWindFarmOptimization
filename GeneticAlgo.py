@@ -3,6 +3,7 @@ from getPopulation import *
 from grid import *
 from selection import *
 from crossover import *
+import matplotlib.pyplot as plt
 
 g = grid(100)
 if len(sys.argv) == 2:
@@ -12,6 +13,7 @@ else:
 
 numGen = 100
 totalPopSize = 100
+
 
 for i in range(numGen):
     selected = selection(pop, 80)
@@ -29,3 +31,32 @@ with open("population.txt", "w") as f:
             f.write(str(point.x) + "," + str(point.y) + "\n")
         i += 1
     f.write("END")
+
+
+def plot_area(filename = "population.txt", numTurbines=50):
+    population = []
+    locs = []
+    with open(filename, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            if "Wind Farm" in line:
+                if len(locs) > 0:
+                    population.append(WindFarm(numTurbines, locs))
+                locs = []
+            elif "END" in line:
+                population.append(WindFarm(numTurbines, locs))
+            else:
+                line = line[:-1].split(",")
+                x, y = float(line[0]), float(line[1])
+                locs.append(Point(x,y))
+    coord = population[1].locs
+    x=[]
+    y=[]
+    for i in coord:
+        x.append(i.x)
+        y.append(i.y)
+    plt.scatter(x,y)
+    plt.show()
+    return population
+plot_area()
+
