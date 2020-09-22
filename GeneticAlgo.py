@@ -4,7 +4,7 @@ from grid import *
 from selection import *
 from crossover import *
 
-g = grid(100)
+g = grid(50)
 if len(sys.argv) == 2:
     pop = getPopulation(g, filename=sys.argv[1])
 else:

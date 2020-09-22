@@ -72,6 +72,8 @@ from   math   import radians as DegToRad       # Degrees to radians Conversion
 from shapely.geometry import Point             # Imported for constraint checking
 from shapely.geometry.polygon import Polygon
 
+from matplotlib import pyplot as plt
+
 import warnings
 warnings.filterwarnings("ignore")
 
@@ -393,7 +395,10 @@ def getAEP(turb_rad, turb_coords, power_curve, wind_inst_freq,
     
     return(AEP)
     
-
+def plotting(points):
+    print(points)
+    plt.scatter(points[:,0], points[:,1])
+    plt.show()
     
 def checkConstraints(turb_coords, turb_diam):
     """
@@ -439,6 +444,8 @@ def checkConstraints(turb_coords, turb_diam):
         for turb2 in np.delete(turb_coords, i, axis=0):
             if  np.linalg.norm(turb1 - turb2) < 4*turb_diam:
                 prox_constr_viol = True
+                plotting(turb_coords)
+                assert prox_constr_viol == False
                 break
     
     # print messages

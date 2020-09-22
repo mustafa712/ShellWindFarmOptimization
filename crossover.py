@@ -2,6 +2,7 @@ import numpy as np
 from WindFarm import *
 from grid import *
 from itertools import combinations
+from Farm_Evaluator_Vec import *
 import random
 
 MUTATION_RATE = 0.05
@@ -53,6 +54,7 @@ def crossover(parent1, parent2,grid):
     assert len(parent1.locs) == len(parent2.locs)
     numTurbines = len(parent1.locs)
     child = list(np.random.choice(parent1.locs, int(numTurbines/2), replace=False))
+
     for loc in parent2.locs:
         if len(child) == numTurbines:
             break

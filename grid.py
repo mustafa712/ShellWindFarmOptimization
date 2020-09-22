@@ -10,17 +10,22 @@ class Point:
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
 
+    def __ne__(self, other):
+        if self.x != other.x:
+            return True
+        elif self.y != other.y:
+            return True
+        else:
+            return False
+
     def check_constraints(self, pool):
         if self in pool:
             return False
-        for i in self.inRange:
-            coord = (i.x , i.y)
-            #print(coord)
-            for j in pool:
-                if (j.x == i.x) and (j.y == i.y):
-                    return False#, pool
+        for pt in self.inRange:
+            if pt in pool:
+                return False
         else:
-            return True #, (pool+self.point)
+            return True
            
 def checkCircle(centre, point, radius=400):
     return (point.x - centre.x)**2 + (point.y - centre.y)**2 < radius**2
@@ -33,18 +38,15 @@ def fillNeighbours(points):
                     if(checkCircle(p1,p2)):
                         p1.inRange.append(p2)
        
-def grid(n):  # n is the number of divisions you are making. 
+def grid(n):  # n is the distance between two points in a row or column. 
     points = []
-    div_len = 4000/n
-    for i in range(0,n):
-        if (i*div_len) >3950 or (i*div_len) <50:
-            continue
-        else:
-            for j in range(0,n):
-                if (j*div_len) >3950 or (j*div_len) <50: 
-                    continue
-                else:
-                    points.append(Point(i*div_len, j*div_len))
+    row = 50
+    while row <= 3950:
+        col = 50
+        while col <= 3950:
+            points.append(Point(row, col))
+            col += n
+        row += 50
                     
     fillNeighbours(points)
     
