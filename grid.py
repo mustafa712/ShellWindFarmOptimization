@@ -2,7 +2,8 @@
 #import matplotlib.pyplot as plt
 
 class Point:
-    def __init__(self, x, y):
+    def __init__(self, id_, x, y):
+        self.id_ = id_
         self.x = x
         self.y = y
         self.inRange = [] #this will contain all the points that are within 400m from this point
@@ -40,12 +41,14 @@ def fillNeighbours(points):
        
 def grid(n):  # n is the distance between two points in a row or column. 
     points = []
+    id_ = 1
     row = 50
     while row <= 3950:
         col = 50
         while col <= 3950:
-            points.append(Point(row, col))
+            points.append(Point(id_, row, col))
             col += n
+            id_ += 1
         row += 50
                     
     fillNeighbours(points)
