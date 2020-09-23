@@ -19,9 +19,12 @@ for i in range(numGen):
     selected = selection(pop, 80)
     children = breed(selected,g)
     pop = pop + children
+    pop = list(set(pop))
+    assert len(pop) >= totalPopSize
+    print("Population Size after breed = ", len(pop))
     pop.sort(key=lambda x:x.aep, reverse=True)
     pop = pop[:totalPopSize]
-    print("Generation ", i, "Max AEP = ", pop[0].aep, "Min AEP = ", pop[-1].aep)
+    print("Generation ", i+1, "Max AEP = ", pop[0].aep, "Min AEP = ", pop[-1].aep)
 
 with open("population.txt", "w") as f:
     i = 1

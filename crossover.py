@@ -5,7 +5,7 @@ from itertools import combinations
 from Farm_Evaluator_Vec import *
 import random
 
-MUTATION_RATE = 0.50
+MUTATION_RATE = 0.20
 
 def mutate(child,grid):
     """
