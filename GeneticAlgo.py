@@ -5,7 +5,7 @@ from selection import *
 from crossover import *
 import matplotlib.pyplot as plt
 
-g = grid(5)
+g = grid(10)
 if len(sys.argv) == 2:
     pop = getPopulation(g, filename=sys.argv[1])
 else:
@@ -35,7 +35,7 @@ with open("population.txt", "w") as f:
         i += 1
     f.write("END")
 
-
+'''
 def plot_area(filename = "population.txt", numTurbines=50):
     population = []
     locs = []
@@ -55,11 +55,11 @@ def plot_area(filename = "population.txt", numTurbines=50):
     coord = population[1].locs
     x=[]
     y=[]
-    for i in coord:
-        x.append(i.x)
-        y.append(i.y)
-    plt.scatter(x,y)
-    plt.show()
+    #for i in coord:
+    #    x.append(i.x)
+    #    y.append(i.y)
+    #plt.scatter(x,y)
+    #plt.show()
     return population
 plot_area()
-
+'''
