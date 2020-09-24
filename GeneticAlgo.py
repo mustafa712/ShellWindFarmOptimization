@@ -5,7 +5,7 @@ from selection import *
 from crossover import *
 import matplotlib.pyplot as plt
 
-g = grid(50)
+g = grid(5)
 if len(sys.argv) == 2:
     pop = getPopulation(g, filename=sys.argv[1])
 else:
